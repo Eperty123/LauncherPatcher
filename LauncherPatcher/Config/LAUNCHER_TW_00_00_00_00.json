@@ -1,0 +1,128 @@
+{
+  "HEADER": "00 00 00 00",
+  "LAUNCHER_REGION": 3,
+  "LAUNCHER_HEADER_CHECK": {
+    "OffsetType": 1,
+    "OffsetInfo": {
+      "Offset": 264,
+      "MaxLength": 4,
+      "EncodingType": 1
+    }
+  },
+  "PATCH_LINK": {
+    "OffsetType": 2,
+    "OffsetInfo": {
+      "Offset": 1169040,
+      "MaxLength": 19,
+      "EncodingType": 0
+    }
+  },
+  "GAME_ABBREVIATION_FOLDER_NAME": {
+    "OffsetType": 3,
+    "OffsetInfo": {
+      "Offset": 1169080,
+      "MaxLength": 3,
+      "EncodingType": 0
+    }
+  },
+  "PATCH_DOWNLOAD_FOLDER_NAME": [
+    {
+      "OffsetType": 4,
+      "OffsetInfo": {
+        "Offset": 1168418,
+        "MaxLength": 31,
+        "EncodingType": 0
+      }
+    },
+    {
+      "OffsetType": 4,
+      "OffsetInfo": {
+        "Offset": 1168512,
+        "MaxLength": 31,
+        "EncodingType": 0
+      }
+    }
+  ],
+  "DATA_DB_FIX": {
+    "OffsetType": 5,
+    "OffsetInfo": {
+      "Offset": 1148594,
+      "MaxLength": 7,
+      "EncodingType": 0
+    }
+  },
+  "CONNECT_SETUP": {
+    "OffsetType": 6,
+    "OffsetInfo": {
+      "Offset": 1165356,
+      "MaxLength": 26,
+      "EncodingType": 0
+    }
+  },
+  "REGION_CODE": [
+    {
+      "OffsetType": 7,
+      "OffsetInfo": {
+        "Offset": 1166948,
+        "MaxLength": 2,
+        "EncodingType": 0
+      }
+    },
+    {
+      "OffsetType": 7,
+      "OffsetInfo": {
+        "Offset": 1169116,
+        "MaxLength": 2,
+        "EncodingType": 0
+      }
+    },
+    {
+      "OffsetType": 7,
+      "OffsetInfo": {
+        "Offset": 3707172,
+        "MaxLength": 2,
+        "EncodingType": 0
+      }
+    }
+  ],
+  "NEWS_PAGE": {
+    "OffsetType": 8,
+    "OffsetInfo": {
+      "Offset": 1165464,
+      "MaxLength": 32,
+      "EncodingType": 0
+    }
+  },
+  "LAUNCHER_SETTINGS_NAME": {
+    "OffsetType": 9,
+    "OffsetInfo": {
+      "Offset": 1168064,
+      "MaxLength": 15,
+      "EncodingType": 0
+    }
+  },
+  "LAUNCHER_LOG_NAME": {
+    "OffsetType": 10,
+    "OffsetInfo": {
+      "Offset": 1163212,
+      "MaxLength": 22,
+      "EncodingType": 0
+    }
+  },
+  "WEBSITE_LINK": {
+    "OffsetType": 11,
+    "OffsetInfo": {
+      "Offset": 1165536,
+      "MaxLength": 63,
+      "EncodingType": 0
+    }
+  },
+  "SEND_LOG_LINK": {
+    "OffsetType": 12,
+    "OffsetInfo": {
+      "Offset": 1166308,
+      "MaxLength": 26,
+      "EncodingType": 0
+    }
+  }
+}
