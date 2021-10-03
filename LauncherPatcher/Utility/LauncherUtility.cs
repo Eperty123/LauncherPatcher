@@ -23,7 +23,9 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 using LauncherPatcher.Definiton;
 using LauncherPatcher.Definiton.Configuration;
 using LauncherPatcher.Definiton.Enum;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LauncherPatcher.Utility
 {
@@ -55,18 +57,14 @@ namespace LauncherPatcher.Utility
             }
         }
 
-        public static LauncherRegionType GetLauncherRegionType(this string launcherFile)
+        public static bool HasDefinition(this List<LauncherInfo> defs, string header)
         {
-            using (var fs = new FileStream(launcherFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (var br = new BinaryReader(fs))
-            {
-                var compatibility_string = GetHeader(launcherFile);
-                if (!compatibility_string.IsNullOrEmpty() && LauncherDefinition.SUPPORTED_LAUNCHERS.ContainsKey(compatibility_string))
-                {
-                    return LauncherDefinition.SUPPORTED_LAUNCHERS[compatibility_string].LAUNCHER_REGION;
-                }
-            }
-            return LauncherRegionType.UNKNOWN;
+            return defs.Any(x => x.HEADER == header);
+        }
+
+        public static LauncherInfo GetLauncherInfo(this List<LauncherInfo> defs, string header)
+        {
+            return defs.FirstOrDefault(x => x.HEADER == header);
         }
     }
 }

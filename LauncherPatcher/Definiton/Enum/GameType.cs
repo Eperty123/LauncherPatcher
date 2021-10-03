@@ -20,31 +20,12 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using LauncherPatcher.Definiton.Configuration;
-using LauncherPatcher.Definiton.Enum;
-
-namespace LauncherPatcher.Definiton.Inheritance
+namespace LauncherPatcher.Definiton.Enum
 {
-    public class HKLauncher : Launcher
+    public enum GameType
     {
-        #region Constructors
-
-        public HKLauncher(LauncherDefinition launcherDefinition) : base(launcherDefinition)
-        {
-        }
-
-        public HKLauncher(string file) : base(file)
-        {
-        }
-
-        public HKLauncher(LauncherRegionType launcherRegionType, string header) : base(launcherRegionType, header)
-        {
-        }
-
-        public HKLauncher(LauncherRegionType launcherRegionType, string header, LauncherInfo launcherInfo) : base(launcherRegionType, header, launcherInfo)
-        {
-        }
-
-        #endregion
+        AURA_KINGDOM,
+        EDEN_ETERNAL,
+        TWIN_SAGA,
     }
 }

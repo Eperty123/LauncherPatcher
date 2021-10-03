@@ -44,8 +44,6 @@ namespace LauncherPatcher.Definiton.Interface
 
         #region Public Methods
 
-        bool IsCompatible();
-
         void LoadFile(string file);
 
         void LoadBytes(byte[] data);
@@ -115,11 +113,6 @@ namespace LauncherPatcher.Definiton.Interface
         /// <param name="outputFile">The file to save the <see cref="LauncherInfo"/> to.</param>
         void SaveDefinitionToFile(string outputFile);
 
-        /// <summary>
-        /// Assign a <see cref="LauncherDefinition"/>. This is very important to assign!
-        /// </summary>
-        /// <param name="launcherDefinition">The launcher definition to assign.</param>
-        void SetLauncherDefinition(LauncherDefinition launcherDefinition);
         #endregion
     }
 }

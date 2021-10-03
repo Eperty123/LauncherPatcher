@@ -78,6 +78,8 @@ namespace LauncherPatcher
             this.patchBtn = new System.Windows.Forms.Button();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.ExportDefBtn = new System.Windows.Forms.Button();
+            this.launcherTypeCombobox = new System.Windows.Forms.ComboBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -303,6 +305,7 @@ namespace LauncherPatcher
             // 
             // openBtn
             // 
+            this.openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.openBtn.Location = new System.Drawing.Point(492, 274);
             this.openBtn.Name = "openBtn";
             this.openBtn.Size = new System.Drawing.Size(75, 43);
@@ -327,6 +330,7 @@ namespace LauncherPatcher
             // 
             // patchBtn
             // 
+            this.patchBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.patchBtn.Enabled = false;
             this.patchBtn.Location = new System.Drawing.Point(573, 275);
             this.patchBtn.Name = "patchBtn";
@@ -352,8 +356,9 @@ namespace LauncherPatcher
             // 
             // ExportDefBtn
             // 
+            this.ExportDefBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ExportDefBtn.Enabled = false;
-            this.ExportDefBtn.Location = new System.Drawing.Point(12, 275);
+            this.ExportDefBtn.Location = new System.Drawing.Point(386, 274);
             this.ExportDefBtn.Name = "ExportDefBtn";
             this.ExportDefBtn.Size = new System.Drawing.Size(100, 43);
             this.ExportDefBtn.TabIndex = 13;
@@ -361,11 +366,38 @@ namespace LauncherPatcher
             this.ExportDefBtn.UseVisualStyleBackColor = true;
             this.ExportDefBtn.Click += new System.EventHandler(this.ExportDefBtn_Click);
             // 
+            // launcherTypeCombobox
+            // 
+            this.launcherTypeCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.launcherTypeCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.launcherTypeCombobox.FormattingEnabled = true;
+            this.launcherTypeCombobox.Location = new System.Drawing.Point(12, 296);
+            this.launcherTypeCombobox.Name = "launcherTypeCombobox";
+            this.launcherTypeCombobox.Size = new System.Drawing.Size(189, 21);
+            this.launcherTypeCombobox.TabIndex = 14;
+            this.launcherTypeCombobox.SelectedIndexChanged += new System.EventHandler(this.launcherTypeCombobox_SelectedIndexChanged);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.linkLabel1.LinkColor = System.Drawing.Color.Black;
+            this.linkLabel1.Location = new System.Drawing.Point(9, 275);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(45, 15);
+            this.linkLabel1.TabIndex = 15;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Game";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(660, 341);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.launcherTypeCombobox);
             this.Controls.Add(this.ExportDefBtn);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.patchBtn);
@@ -412,6 +444,8 @@ namespace LauncherPatcher
         private System.Windows.Forms.TextBox websiteLinkTxtBox;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.Button ExportDefBtn;
+        private System.Windows.Forms.ComboBox launcherTypeCombobox;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 

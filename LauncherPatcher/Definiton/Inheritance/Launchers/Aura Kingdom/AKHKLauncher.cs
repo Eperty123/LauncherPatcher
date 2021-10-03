@@ -20,28 +20,24 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using LauncherPatcher.Definiton.Configuration;
 using LauncherPatcher.Definiton.Enum;
 
-namespace LauncherPatcher.Definiton.Inheritance
+namespace LauncherPatcher.Definiton.Inheritance.Launchers.AuraKingdom
 {
-    public class TWLauncher : Launcher
+    public class AKHKLauncher : Launcher
     {
         #region Constructors
 
-        public TWLauncher(LauncherDefinition launcherDefinition) : base(launcherDefinition)
+
+        public AKHKLauncher(LauncherRegionType launcherRegionType, string header) : base(launcherRegionType, header)
         {
         }
 
-        public TWLauncher(string file) : base(file)
+        public AKHKLauncher(LauncherInfo launcherInfo, string file) : base(launcherInfo, file)
         {
         }
 
-        public TWLauncher(LauncherRegionType launcherRegionType, string header) : base(launcherRegionType, header)
-        {
-        }
-
-        public TWLauncher(LauncherRegionType launcherRegionType, string header, LauncherInfo launcherInfo) : base(launcherRegionType, header, launcherInfo)
+        public AKHKLauncher(LauncherRegionType launcherRegionType, string header, LauncherInfo launcherInfo) : base(launcherRegionType, header, launcherInfo)
         {
         }
 

@@ -32,32 +32,26 @@ namespace LauncherPatcher.Definiton
     public abstract class Launcher : LauncherOffsetInfo, ILauncher
     {
         #region Private, Protected Variables
-        //protected LauncherDefinition LauncherDefinition = GetInstance();
-        protected LauncherDefinition LauncherDefinition;
         #endregion
 
         #region Public Variables
         public string Name { get; set; }
         public Dictionary<LauncherOffset, string> OffsetsToApply { get; set; }
+        public LauncherInfo LauncherInfo { get; set; }
+        public GameType LauncherType { get; set; }
         public LauncherRegionType LauncherRegion { get; set; }
         public string Header { get; set; }
         public bool Valid { get; set; }
 
-        public LauncherInfo LauncherInfo { get; set; }
-
         #endregion
 
         #region Constructors
-        public Launcher(LauncherDefinition launcherDefinition)
-        {
-            Initialize();
-            SetLauncherDefinition(launcherDefinition);
-        }
 
-        public Launcher(string file)
+        public Launcher(LauncherInfo launcherInfo, string file)
         {
             Initialize();
             LoadFile(file);
+            SetLauncherInfo(launcherInfo);
         }
 
         public Launcher(LauncherRegionType launcherRegionType, string header)
@@ -87,26 +81,21 @@ namespace LauncherPatcher.Definiton
             OffsetsToApply = new Dictionary<LauncherOffset, string>();
         }
 
-        /// <summary>
-        /// Check the <see cref="Launcher"/>'s compatibility.
-        /// </summary>
-        public bool IsCompatible()
+        protected void CheckCompatibility()
         {
-            if (ReadBytes.Length > 0)
+            if (ReadBytes != null && ReadBytes.Length > 0)
             {
+                // TODO: Detect launcher tye and header through the defintion list.
+
                 var compatibility_string = GetHeader();
-                //if (!compatibility_string.IsNullOrEmpty() && LauncherDefinition.SUPPORTED_LAUNCHER_HEADERS.ContainsKey(compatibility_string))
-                if (!compatibility_string.IsNullOrEmpty() && LauncherDefinition.SUPPORTED_LAUNCHERS.ContainsKey(compatibility_string))
+                if (!compatibility_string.IsNullOrEmpty() && LauncherInfo.HEADER == compatibility_string)
                 {
-                    SetLauncherInfo(LauncherDefinition.SUPPORTED_LAUNCHERS[compatibility_string]);
                     Header = compatibility_string;
                     SetLauncherRegionType(LauncherInfo.LAUNCHER_REGION);
-                    Name = $"{LauncherRegion}_{Header.Replace(" ", "_")}";
+                    Name = $"{LauncherInfo.GAME_TYPE}_{LauncherRegion}_{Header.Replace(" ", "_")}";
                     Valid = true;
-                    return Valid;
                 }
             }
-            return false;
         }
 
         /// <summary>
@@ -144,6 +133,7 @@ namespace LauncherPatcher.Definiton
             LauncherInfo.LAUNCHER_LOG_NAME.OffsetInfo.LoadBytes(ReadBytes);
             LauncherInfo.WEBSITE_LINK.OffsetInfo.LoadBytes(ReadBytes);
             LauncherInfo.SEND_LOG_LINK.OffsetInfo.LoadBytes(ReadBytes);
+
         }
 
         protected override void Dispose(bool disposing)
@@ -169,14 +159,12 @@ namespace LauncherPatcher.Definiton
         public override void LoadFile(string file)
         {
             base.LoadFile(file);
-            IsCompatible();
         }
 
         public override void LoadBytes(byte[] data)
         {
             base.LoadBytes(data);
             WriteBytes = data;
-            IsCompatible();
         }
 
         /// <summary>
@@ -226,6 +214,7 @@ namespace LauncherPatcher.Definiton
             {
                 LauncherInfo = launcherInfo;
                 InitializeLauncherInfo();
+                CheckCompatibility();
             }
         }
 
@@ -399,10 +388,6 @@ namespace LauncherPatcher.Definiton
             }
         }
 
-        public void SetLauncherDefinition(LauncherDefinition launcherDefinition)
-        {
-            LauncherDefinition = launcherDefinition;
-        }
         #endregion
     }
 }

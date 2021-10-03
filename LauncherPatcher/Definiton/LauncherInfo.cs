@@ -29,6 +29,7 @@ namespace LauncherPatcher.Definiton
     {
         #region Public Variables
         public string HEADER { get; set; }
+        public GameType GAME_TYPE { get; set; }
         public LauncherRegionType LAUNCHER_REGION { get; set; }
         public LauncherOffset LAUNCHER_HEADER_CHECK { get; set; }
         public LauncherOffset PATCH_LINK { get; set; }

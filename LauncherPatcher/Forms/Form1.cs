@@ -33,83 +33,42 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using static LauncherPatcher.Definiton.Config;
+using LauncherPatcher.Definiton.Inheritance.Launchers.AuraKingdom;
+using System.Collections.Generic;
+using LauncherPatcher.Definiton.Inheritance.Launchers.Eden_Eternal;
 
 namespace LauncherPatcher
 {
     public partial class Form1 : Form
     {
-        #region Redundant shit
-        //public string PatchLink = "ftp.ffonline.com";
-        //public string OriginalRootFolderName = "ff2";
-        //public string OriginalPatchFolderName = "CompressionGameData/version.txt";
-        //public string OriginalDataDb = "Data\\db";
-        //public string OriginalConnectIni = "login.ffonline.com.tw,6543";
-        //public string OriginalCountryCode = "TW";
-        //public string OriginalDefaultPage = "http://www.ffonline.com.tw/patch";
-        //public string OriginalLauncherMod = "LauncherMod.ini";
-        //public string OriginalUpgradeErrorReport = "UpgradeErrorReport.txt";
-        //public string OriginalFacebookLink = "http://xdbx-legend.com.tw/login/index.php?auto_start??spacefill";
-
-        //IniFile Ini = new IniFile();
-
-        private string Title;
-        #endregion
 
         #region Private Variables
         ILauncher Launcher;
         private string HeaderString;
         LauncherDefinition LauncherDefinition = LauncherDefinition.GetInstance();
+        private GameType SelectedGameType;
         #endregion
 
         #region Constructors
         public Form1()
         {
             InitializeComponent();
-            FormClosing += new FormClosingEventHandler(Form1_Closing);
-            Title = Text;
-            LoadConfig();
-            //ExportPremadeConfig();
+            Initialize();
         }
         #endregion
 
         #region Private Methods
 
-        private void LoadConfig()
+        private void Initialize()
         {
-            // Load settings in a another to not affect startup time.
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                if (Directory.Exists(CONFIG_DIRECTORY))
-                {
-                    var files = Directory.EnumerateFiles(CONFIG_DIRECTORY, " *.json", SearchOption.AllDirectories).ToList();
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        var file = files[i];
-                        var def = JsonUtility.FromJson<LauncherInfo>(File.ReadAllText(file));
-                        if (def != null && !string.IsNullOrEmpty(def.HEADER))
-                        {
-                            if (!LauncherDefinition.SUPPORTED_LAUNCHERS.ContainsKey(def.HEADER))
-                                LauncherDefinition.SUPPORTED_LAUNCHERS.Add(def.HEADER, def);
-                        }
-                    }
-                }
-            });
-        }
+            var launcherTypes = Enum.GetValues(typeof(GameType));
+            for (int i = 0; i < launcherTypes.Length; i++)
+                launcherTypeCombobox.Items.Add(launcherTypes.GetValue(i));
 
-        private void ExportPremadeConfig()
-        {
-            if (!Directory.Exists(CONFIG_DIRECTORY))
-                Directory.CreateDirectory(CONFIG_DIRECTORY);
+            // Default selection to Aura Kingdom.
+            launcherTypeCombobox.SelectedIndex = 0;
 
-            var defs = LauncherDefinition.SUPPORTED_LAUNCHERS.Values.ToList();
-            for (int i = 0; i < defs.Count; i++)
-            {
-                var def = defs[i];
-                if (def != null && !string.IsNullOrEmpty(def.HEADER))
-                {
-                    File.WriteAllText(Path.Combine(CONFIG_DIRECTORY, $"{def.LAUNCHER_REGION}_{def.HEADER.Replace(" ", "_")}.json"), JsonUtility.ToJson(def));
-                }
-            }
+            FormClosing += new FormClosingEventHandler(Form1_Closing);
         }
 
         private void CheckLauncher(string file)
@@ -118,39 +77,82 @@ namespace LauncherPatcher
 
             // Load Launcher as byte array.
             HeaderString = LauncherUtility.GetHeader(file);
-            bool supported = !string.IsNullOrEmpty(HeaderString) && LauncherDefinition.SUPPORTED_LAUNCHERS.ContainsKey(HeaderString);
+            LauncherInfo desiredLauncherInfo = null;
+            List<LauncherInfo> desiredLauncherInfoList = null;
 
-            if (supported)
+            // Implement the necessary configs if needed.
+
+            switch (SelectedGameType)
             {
-                var supported_launcher = LauncherDefinition.SUPPORTED_LAUNCHERS[HeaderString];
-                var launcherType = supported_launcher.LAUNCHER_REGION;
+                case GameType.AURA_KINGDOM:
+                    desiredLauncherInfoList = LauncherDefinition.SUPPORTED_AK_LAUNCHERS;
+                    break;
 
-                switch (launcherType)
+                case GameType.EDEN_ETERNAL:
+                    desiredLauncherInfoList = LauncherDefinition.SUPPORTED_EE_LAUNCHERS;
+                    break;
+
+                default:
+                    MessageBox.Show($"This game is not yet supported.", "Game Not Supported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+            };
+
+            // Process the launcher info list and get the appropriate definition for the selected game.
+            if (desiredLauncherInfoList != null && desiredLauncherInfoList.HasDefinition(HeaderString))
+            {
+                desiredLauncherInfo = desiredLauncherInfoList.GetLauncherInfo(HeaderString);
+                var region = desiredLauncherInfo.LAUNCHER_REGION;
+
+                // Create a new instance of the correct launcher based on the region code.
+                switch (SelectedGameType)
                 {
-                    case LauncherRegionType.LAUNCHER_HK:
-                        Launcher = new HKLauncher(LauncherDefinition);
-                        break;
-                    case LauncherRegionType.LAUNCHER_TW:
-                        Launcher = new TWLauncher(LauncherDefinition);
+                    case GameType.AURA_KINGDOM:
+                        switch (region)
+                        {
+                            case LauncherRegionType.LAUNCHER_HK:
+                                Launcher = new AKHKLauncher(desiredLauncherInfo, file);
+                                break;
+                            case LauncherRegionType.LAUNCHER_TW:
+                                Launcher = new AKTWLauncher(desiredLauncherInfo, file);
+                                break;
+
+                            default:
+                                MessageBox.Show($"This launcher with the region code: \"{desiredLauncherInfo.LAUNCHER_REGION}\" is not supported. Please create a definition file for it.", "Unsupported Launcher Region", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                        }
                         break;
 
-                    default:
-                        MessageBox.Show($"This launcher with the region code: \"{launcherType}\" is not supported. Let me know and I'll try to add support for it.", "Unsupported Launcher Region", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    case GameType.EDEN_ETERNAL:
+                        switch (region)
+                        {
+                            case LauncherRegionType.LAUNCHER_TW:
+                                Launcher = new EETWLauncher(desiredLauncherInfo, file);
+                                break;
+
+                            default:
+                                MessageBox.Show($"This launcher with the region code: \"{desiredLauncherInfo.LAUNCHER_REGION}\" is not supported. Please create a definition file for it.", "Unsupported Launcher Region", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                        }
                         break;
                 }
+            }
 
-                Launcher.LoadFile(file);
+            // Parse the launcher data.
+            if (desiredLauncherInfo != null)
+            {
                 if (Launcher != null && Launcher.Valid)
                 {
                     ReadLauncher(Launcher);
-                    Text = $"{Title} ({Launcher.LauncherRegion} - {Launcher.GetHeader()})";
+                    Text = $"{Application.ProductName} ({Launcher.LauncherRegion} - {Launcher.GetHeader()})";
                 }
             }
             else
             {
+                // No valid information, disable patcher.
+
                 patchBtn.Enabled = false;
                 ExportDefBtn.Enabled = false;
-                MessageBox.Show($"This launcher with the header: \"{HeaderString}\" is not defined and therefore not supported! Please add it to your definition file.", "Unsupported Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"This launcher with the header: \"{HeaderString}\" is not defined and therefore not supported for the selected game! Please create a definition file for it.", "Unsupported Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -169,6 +171,7 @@ namespace LauncherPatcher
 
             //dataDbTxtBox.SetText("Automatically fixed upon save.");
             dataDbTxtBox.SetText(launcherInfo.DATA_DB_FIX.OffsetInfo.ReadDataAsString());
+            dataDbTxtBox.SetMaxLength(launcherInfo.DATA_DB_FIX.OffsetInfo.GetMaxLengthForTextBox());
 
             connectSetupTxtBox.SetText(launcherInfo.CONNECT_SETUP.OffsetInfo.ReadDataAsString());
             connectSetupTxtBox.SetMaxLength(launcherInfo.CONNECT_SETUP.OffsetInfo.GetMaxLengthForTextBox());
@@ -334,6 +337,12 @@ namespace LauncherPatcher
             UpdateLabels();
         }
 
+        private void launcherTypeCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (launcherTypeCombobox.SelectedItem != null)
+                SelectedGameType = (GameType)launcherTypeCombobox.SelectedItem;
+        }
+
         private void linkLabel2_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/Eperty123");
@@ -366,6 +375,5 @@ namespace LauncherPatcher
         #endregion
 
         #endregion
-
     }
 }
