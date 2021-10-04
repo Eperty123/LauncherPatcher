@@ -77,6 +77,7 @@
     <Compile Include="Definiton\Enum\LauncherRegionType.cs" />
     <Compile Include="Definiton\Enum\GameType.cs" />
     <Compile Include="Definiton\Inheritance\Launchers\Eden Eternal\EETWLauncher.cs" />
+    <Compile Include="Definiton\Inheritance\Launchers\Twin Saga\TSTWLauncher.cs" />
     <Compile Include="Definiton\Interface\ILauncher.cs" />
     <Compile Include="Utility\StringUtility.cs" />
     <Compile Include="Definiton\Inheritance\LauncherInfo\CNLauncherInfo.cs" />

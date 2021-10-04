@@ -253,6 +253,52 @@ namespace LauncherPatcher.Definiton.Configuration
             #endregion
         };
 
+        public List<LauncherInfo> SUPPORTED_TS_LAUNCHERS = new List<LauncherInfo>()
+        {
+            #region Eden Eternal
+
+            #region TW
+
+            new LauncherInfo()
+            {
+                HEADER = "00 00 00 00",
+                GAME_TYPE = GameType.TWIN_SAGA,
+                LAUNCHER_REGION = LauncherRegionType.LAUNCHER_TW,
+                LAUNCHER_HEADER_CHECK = new LauncherOffset(LauncherOffsetType.LAUNCHER_HEADER_CHECK, new LauncherOffsetInfo((uint)LAUNCHER_HEADER_OFFSET, (uint)LAUNCHER_HEADER_OFFSET_READ_COUNT, EncodingType.UTF8)),
+                PATCH_LINK = new LauncherOffset(LauncherOffsetType.PATCH_LINK, new LauncherOffsetInfo(1148560, 19)),
+                GAME_ABBREVIATION_FOLDER_NAME = new LauncherOffset(LauncherOffsetType.GAME_ABBREVIATION_FOLDER_NAME, new LauncherOffsetInfo(1148600, 2)),
+
+                #region Patch folder name
+                PATCH_DOWNLOAD_FOLDER_NAME = new List<LauncherOffset>()
+                {
+                    new LauncherOffset(LauncherOffsetType.PATCH_DOWNLOAD_FOLDER_NAME, new LauncherOffsetInfo(1147938, 31)),
+                    new LauncherOffset(LauncherOffsetType.PATCH_DOWNLOAD_FOLDER_NAME, new LauncherOffsetInfo(1148032, 31)),
+                },
+                #endregion
+
+                DATA_DB_FIX = new LauncherOffset(LauncherOffsetType.DATA_DB_FIX, new LauncherOffsetInfo(1128106, 7)),
+                CONNECT_SETUP = new LauncherOffset(LauncherOffsetType.CONNECT_SETUP, new LauncherOffsetInfo(1144884, 26)),
+
+                #region Region code
+                REGION_CODE = new List<LauncherOffset>()
+                {
+                    new LauncherOffset(LauncherOffsetType.REGION_CODE, new LauncherOffsetInfo(1146452, 2)),
+                    new LauncherOffset(LauncherOffsetType.REGION_CODE, new LauncherOffsetInfo(1148636, 2)),
+                    new LauncherOffset(LauncherOffsetType.REGION_CODE, new LauncherOffsetInfo(6283032, 2)),
+                },
+                #endregion
+
+                NEWS_PAGE = new LauncherOffset(LauncherOffsetType.NEWS_PAGE, new LauncherOffsetInfo(1144992, 33)),
+                LAUNCHER_SETTINGS_NAME = new LauncherOffset(LauncherOffsetType.LAUNCHER_SETTINGS_NAME, new LauncherOffsetInfo(1147588, 15)),
+                LAUNCHER_LOG_NAME = new LauncherOffset(LauncherOffsetType.LAUNCHER_LOG_NAME, new LauncherOffsetInfo(1142724, 22)),
+                WEBSITE_LINK = new LauncherOffset(LauncherOffsetType.WEBSITE_LINK, new LauncherOffsetInfo(1145064, 63)),
+                SEND_LOG_LINK = new LauncherOffset(LauncherOffsetType.SEND_LOG_LINK, new LauncherOffsetInfo(1145826, 26))
+            },
+
+            #endregion
+
+            #endregion
+        };
         #endregion
 
         #endregion

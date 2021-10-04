@@ -26,16 +26,12 @@ using LauncherPatcher.Definiton;
 using System.Diagnostics;
 using LauncherPatcher.Definiton.Enum;
 using LauncherPatcher.Utility;
-using LauncherPatcher.Definiton.Inheritance;
 using LauncherPatcher.Definiton.Interface;
 using LauncherPatcher.Definiton.Configuration;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using static LauncherPatcher.Definiton.Config;
 using LauncherPatcher.Definiton.Inheritance.Launchers.AuraKingdom;
 using System.Collections.Generic;
 using LauncherPatcher.Definiton.Inheritance.Launchers.Eden_Eternal;
+using LauncherPatcher.Definiton.Inheritance.Launchers.Twin_Saga;
 
 namespace LauncherPatcher
 {
@@ -92,6 +88,10 @@ namespace LauncherPatcher
                     desiredLauncherInfoList = LauncherDefinition.SUPPORTED_EE_LAUNCHERS;
                     break;
 
+                case GameType.TWIN_SAGA:
+                    desiredLauncherInfoList = LauncherDefinition.SUPPORTED_TS_LAUNCHERS;
+                    break;
+
                 default:
                     MessageBox.Show($"This game is not yet supported.", "Game Not Supported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
@@ -127,6 +127,19 @@ namespace LauncherPatcher
                         {
                             case LauncherRegionType.LAUNCHER_TW:
                                 Launcher = new EETWLauncher(desiredLauncherInfo, file);
+                                break;
+
+                            default:
+                                MessageBox.Show($"This launcher with the region code: \"{desiredLauncherInfo.LAUNCHER_REGION}\" is not supported. Please create a definition file for it.", "Unsupported Launcher Region", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                        }
+                        break;
+
+                    case GameType.TWIN_SAGA:
+                        switch (region)
+                        {
+                            case LauncherRegionType.LAUNCHER_TW:
+                                Launcher = new TSTWLauncher(desiredLauncherInfo, file);
                                 break;
 
                             default:
